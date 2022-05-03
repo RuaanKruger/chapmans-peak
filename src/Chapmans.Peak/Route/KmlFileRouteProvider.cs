@@ -11,25 +11,25 @@ namespace Chapmans.Peak.Route;
 public class KmlFileRouteProvider : IRouteProvider
 {
     private readonly string _kmlFilePath;
+    private readonly string _folderName;
 
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="kmlFilePath"></param>
-    public KmlFileRouteProvider(string kmlFilePath)
+    /// <param name="kmlFilePath">The path of the KML file</param>
+    /// <param name="folderName">Name of the folder within the KML file that contains the line points</param>
+    public KmlFileRouteProvider(string kmlFilePath, string folderName)
     {
         Guard.Against.NullOrEmpty(kmlFilePath, nameof(kmlFilePath));
+        Guard.Against.NullOrEmpty(folderName, nameof(folderName));
+        
         _kmlFilePath = kmlFilePath;
+        _folderName = folderName;
     }
 
-    /// <summary>
-    /// Get the route for the provided folder name
-    /// </summary>
-    /// <param name="folderName"></param>
-    /// <returns>The points contained within the line</returns>
-    private IEnumerable<Point> GetRoute(string folderName)
+    /// <inheritdoc />
+    public IEnumerable<Point> GetRoute()
     {
-        Guard.Against.NullOrEmpty(folderName);
         if (!File.Exists(_kmlFilePath))
         {
             throw new FileNotFoundException($"Unable to find KML file : {_kmlFilePath}");
@@ -38,10 +38,10 @@ public class KmlFileRouteProvider : IRouteProvider
         var fileStream = File.OpenText(_kmlFilePath);
         var kmlFile = KmlFile.Load(fileStream);
 
-        var kmlObject = kmlFile.FindObject(folderName);
+        var kmlObject = kmlFile.FindObject(_folderName);
         if (kmlObject == null)
         {
-            throw new InvalidOperationException($"Unable to find object with the id : {folderName}");
+            throw new InvalidOperationException($"Unable to find object with the id : {_folderName}");
         }
 
         // Get the line string
