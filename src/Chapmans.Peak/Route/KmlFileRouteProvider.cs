@@ -10,42 +10,36 @@ namespace Chapmans.Peak.Route;
 /// </summary>
 public class KmlFileRouteProvider : IRouteProvider
 {
-    private readonly string _kmlFilePath;
+    private readonly string _embeddedKmlFile;
 
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="kmlFilePath"></param>
-    public KmlFileRouteProvider(string kmlFilePath)
+    /// <param name="embeddedKmlFile"></param>
+    public KmlFileRouteProvider(string embeddedKmlFile)
     {
-        Guard.Against.NullOrEmpty(kmlFilePath, nameof(kmlFilePath));
-        _kmlFilePath = kmlFilePath;
+        Guard.Against.NullOrEmpty(embeddedKmlFile, nameof(embeddedKmlFile));
+        _embeddedKmlFile =  Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            "Files",
+            embeddedKmlFile);
     }
 
     /// <summary>
     /// Get the route for the provided folder name
     /// </summary>
-    /// <param name="folderName"></param>
     /// <returns>The points contained within the line</returns>
-    private IEnumerable<Point> GetRoute(string folderName)
+    public IEnumerable<Point> GetRoute()
     {
-        Guard.Against.NullOrEmpty(folderName);
-        if (!File.Exists(_kmlFilePath))
+        if (!File.Exists(_embeddedKmlFile))
         {
-            throw new FileNotFoundException($"Unable to find KML file : {_kmlFilePath}");
+            throw new FileNotFoundException($"Unable to find KML file : {_embeddedKmlFile}");
         }
 
-        var fileStream = File.OpenText(_kmlFilePath);
+        var fileStream = File.OpenText(_embeddedKmlFile);
         var kmlFile = KmlFile.Load(fileStream);
 
-        var kmlObject = kmlFile.FindObject(folderName);
-        if (kmlObject == null)
-        {
-            throw new InvalidOperationException($"Unable to find object with the id : {folderName}");
-        }
-
         // Get the line string
-        foreach (var lineString in kmlObject.Flatten().OfType<LineString>())
+        foreach (var lineString in kmlFile.Root.Flatten().OfType<LineString>())
         {
             return lineString.Coordinates.Select(x => new Point
             {

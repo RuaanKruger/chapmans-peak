@@ -8,24 +8,22 @@ namespace Chapmans.Peak.Emulator;
 /// </summary>
 public static class AuthTokenReader
 {
-    private const string TokenFileName = ".emulator_console_auth_token";
-
     /// <summary>
     /// Read the token file from the user home folder
     /// </summary>
     /// <returns></returns>
     /// <exception cref="FileNotFoundException"></exception>
-    public static async Task<string> GetToken()
+    public static string GetToken()
     {
         var userProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        var tokenPath = Path.Combine(userProfilePath, TokenFileName);
+        var tokenPath = Path.Combine(userProfilePath, ".emulator_console_auth_token");
 
-        if (File.Exists(tokenPath))
+        if (!File.Exists(tokenPath))
         {
             throw new FileNotFoundException($"Unable to locate authentication file : {tokenPath}");
         }
         
-        return await File.ReadAllTextAsync(tokenPath, Encoding.Default);
+        return File.ReadAllText(tokenPath, Encoding.Default);
     }
 
 }
