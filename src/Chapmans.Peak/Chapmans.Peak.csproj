@@ -12,4 +12,12 @@
       <PackageReference Include="SharpKml.Core" Version="5.2.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Files\chapmans-peak-drive.kml" />
+      <Content Include="Files\chapmans-peak-drive.kml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Generator>Xml</Generator>
+      </Content>
+    </ItemGroup>
+
 </Project>

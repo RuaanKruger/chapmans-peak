@@ -2,10 +2,14 @@
 
 namespace Chapmans.Peak.Route;
 
+/// <summary>
+/// Interface to define basic requirement for a route provider 
+/// </summary>
 public interface IRouteProvider
 {
     /// <summary>
-    /// Returns a collection of points
+    /// Get a route
     /// </summary>
+    /// <returns></returns>
     IEnumerable<Point> GetRoute();
 }

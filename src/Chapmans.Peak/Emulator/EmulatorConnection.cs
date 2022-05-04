@@ -11,11 +11,12 @@ namespace Chapmans.Peak.Emulator;
 /// <remarks>
 /// A full lists of commands can be found here : https://developer.android.com/studio/run/emulator-console
 /// </remarks>
-public class EmulatorConnection
+public class EmulatorConnection : IDisposable
 {
     private readonly string _authToken;
     private readonly Socket _emulatorSocket;
     private readonly IPEndPoint _endPoint;
+    private bool _disposed;
 
     /// <summary>
     /// Constructor
@@ -48,6 +49,8 @@ public class EmulatorConnection
         }
         
         _emulatorSocket.Connect(_endPoint);
+        ReadResponse();
+        _disposed = false;
         Authenticate();
     }
 
@@ -58,7 +61,7 @@ public class EmulatorConnection
     private void Authenticate()
     {
         SendCommand($"auth {_authToken}");
-    }
+ }
 
     /// <summary>
     /// Disconnect from the emulator
@@ -102,5 +105,31 @@ public class EmulatorConnection
                 break;
             }
         }
+    }
+    
+    /// <inheritdoc cref="IDisposable"/>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        if (disposing && _emulatorSocket.Connected)
+        {
+            _emulatorSocket.Dispose();
+        }
+
+        _disposed = true;
+    }
+
+    /// <inheritdoc cref="IDisposable"/>
+    public void Dispose()
+    {
+        // Dispose of unmanaged resources.
+        Dispose(true);
+        
+        // Suppress finalization.
+        GC.SuppressFinalize(this);
     }
 }

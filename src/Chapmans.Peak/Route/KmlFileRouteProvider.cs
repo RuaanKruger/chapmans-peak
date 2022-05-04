@@ -10,42 +10,36 @@ namespace Chapmans.Peak.Route;
 /// </summary>
 public class KmlFileRouteProvider : IRouteProvider
 {
-    private readonly string _kmlFilePath;
-    private readonly string _folderName;
+    private readonly string _embeddedKmlFile;
 
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="kmlFilePath">The path of the KML file</param>
-    /// <param name="folderName">Name of the folder within the KML file that contains the line points</param>
-    public KmlFileRouteProvider(string kmlFilePath, string folderName)
+    /// <param name="embeddedKmlFile"></param>
+    public KmlFileRouteProvider(string embeddedKmlFile)
     {
-        Guard.Against.NullOrEmpty(kmlFilePath, nameof(kmlFilePath));
-        Guard.Against.NullOrEmpty(folderName, nameof(folderName));
-        
-        _kmlFilePath = kmlFilePath;
-        _folderName = folderName;
+        Guard.Against.NullOrEmpty(embeddedKmlFile, nameof(embeddedKmlFile));
+        _embeddedKmlFile =  Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+            "Files",
+            embeddedKmlFile);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Get the route for the provided folder name
+    /// </summary>
+    /// <returns>The points contained within the line</returns>
     public IEnumerable<Point> GetRoute()
     {
-        if (!File.Exists(_kmlFilePath))
+        if (!File.Exists(_embeddedKmlFile))
         {
-            throw new FileNotFoundException($"Unable to find KML file : {_kmlFilePath}");
+            throw new FileNotFoundException($"Unable to find KML file : {_embeddedKmlFile}");
         }
 
-        var fileStream = File.OpenText(_kmlFilePath);
+        var fileStream = File.OpenText(_embeddedKmlFile);
         var kmlFile = KmlFile.Load(fileStream);
 
-        var kmlObject = kmlFile.FindObject(_folderName);
-        if (kmlObject == null)
-        {
-            throw new InvalidOperationException($"Unable to find object with the id : {_folderName}");
-        }
-
         // Get the line string
-        foreach (var lineString in kmlObject.Flatten().OfType<LineString>())
+        foreach (var lineString in kmlFile.Root.Flatten().OfType<LineString>())
         {
             return lineString.Coordinates.Select(x => new Point
             {
