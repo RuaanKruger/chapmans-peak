@@ -11,7 +11,7 @@ namespace Chapmans.Peak.Emulator;
 /// <remarks>
 /// A full lists of commands can be found here : https://developer.android.com/studio/run/emulator-console
 /// </remarks>
-public class EmulatorConnection : IDisposable
+public sealed class EmulatorConnection : IDisposable
 {
     private readonly string _authToken;
     private readonly Socket _emulatorSocket;
@@ -108,7 +108,7 @@ public class EmulatorConnection : IDisposable
     }
     
     /// <inheritdoc cref="IDisposable"/>
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (_disposed)
         {
@@ -126,10 +126,6 @@ public class EmulatorConnection : IDisposable
     /// <inheritdoc cref="IDisposable"/>
     public void Dispose()
     {
-        // Dispose of unmanaged resources.
         Dispose(true);
-        
-        // Suppress finalization.
-        GC.SuppressFinalize(this);
     }
 }

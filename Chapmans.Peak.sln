@@ -2,10 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D4C80982-990B-451D-8062-87495D2C9F44}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{924FD92F-C8E6-4181-9632-AED969C3A201}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapmans.Peak.Tests", "tests\Chapmans.Peak.Tests\Chapmans.Peak.Tests.csproj", "{89366A4C-D1CD-4B33-B28C-B0298ACACF7A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chapmans.Peak", "src\Chapmans.Peak\Chapmans.Peak.csproj", "{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C}"
 EndProject
 Global
@@ -14,17 +10,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{89366A4C-D1CD-4B33-B28C-B0298ACACF7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{89366A4C-D1CD-4B33-B28C-B0298ACACF7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{89366A4C-D1CD-4B33-B28C-B0298ACACF7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{89366A4C-D1CD-4B33-B28C-B0298ACACF7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{89366A4C-D1CD-4B33-B28C-B0298ACACF7A} = {924FD92F-C8E6-4181-9632-AED969C3A201}
 		{2E0A7ABC-9523-4FF8-88AA-CA6E26CF920C} = {D4C80982-990B-451D-8062-87495D2C9F44}
 	EndGlobalSection
 EndGlobal
