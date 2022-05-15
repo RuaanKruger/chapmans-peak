@@ -40,7 +40,7 @@ foreach (var command in route.Select(point => $"geo fix {point.Latitude} {point.
 ### Further Reading
 There are many commands you can send to the emulator this way and the "geo" command used here is just the tip of the iceberg.
 
-All emulator commands cand be found here : https://developer.android.com/studio/run/emulator-console
+All emulator commands can be found here : https://developer.android.com/studio/run/emulator-console
 
 ## Special thanks
 To https://www.chapmanspeakdrive.co.za/ for maintaining one of the world's most scenic drives and for the usage of their imagery.
